@@ -1,0 +1,727 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+/* ============================================================
+   GOTHIC ANIME THEME — dark romantic palette
+   Primary  : near-black
+   Accent   : deep crimson
+   Secondary: soft pink
+   Support  : white / light gray / muted red
+   ============================================================ */
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-crimson: #b31228;
+    --color-blood: #8a1122;
+    --color-rose: #e0526e;
+    --color-blush: #f5a8bc;
+    --color-velvet: #2b0f1a;
+    --color-ink: #0a0508;
+    --color-mist: #15070d;
+    --color-bone: #f4e6ec;
+    --color-muted-rose: #c9a6b1;
+    --color-glow: #ff7a96;
+
+    --animate-twinkle: twinkle 3.5s ease-in-out infinite;
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-heart-beat: heart-beat 1.6s ease-in-out infinite;
+    --animate-sparkle: sparkle 4s ease-in-out infinite;
+    --animate-drift: drift 20s ease-in-out infinite;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html { scroll-behavior: smooth; }
+
+.gothic-body {
+    background:
+        radial-gradient(1200px 520px at 12% -12%, rgba(179, 18, 40, 0.22), transparent 60%),
+        radial-gradient(1000px 600px at 95% 8%, rgba(224, 82, 110, 0.14), transparent 55%),
+        radial-gradient(1100px 800px at 50% 115%, rgba(179, 18, 40, 0.18), transparent 62%),
+        linear-gradient(180deg, #0a0508 0%, #15070d 40%, #0a0508 100%);
+    color: var(--color-bone);
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+main { position: relative; z-index: 1; }
+
+/* ============================================================
+   AMBIANCE — floating soft glow orbs + drifting sparkles
+   ============================================================ */
+.gothic-ambiance {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.float-orb {
+    position: absolute;
+    border-radius: 9999px;
+    opacity: 0.45;
+    filter: blur(34px);
+    animation: drift ease-in-out infinite;
+}
+.orb-1 { width: 340px; height: 340px; background: rgba(179,18,40,.22); top: -70px; right: -70px; animation-duration: 20s; }
+.orb-2 { width: 260px; height: 260px; background: rgba(224,82,110,.16); bottom: 8%; left: -80px; animation-duration: 24s; animation-delay: -6s; }
+.orb-3 { width: 180px; height: 180px; background: rgba(245,168,188,.14); top: 42%; left: 62%; animation-duration: 28s; animation-delay: -12s; }
+
+@keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(34px, -34px) scale(1.12); }
+}
+
+/* ============================================================
+   DECORATIVE FRAME — subtle lace-like corner accents
+   ============================================================ */
+.gothic-frame {
+    position: relative;
+}
+.gothic-frame::before,
+.gothic-frame::after {
+    content: '❦';
+    position: absolute;
+    font-size: 1.1rem;
+    color: rgba(224, 82, 110, 0.35);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ============================================================
+   GLASS / CARDS
+   ============================================================ */
+.gothic-glass {
+    background: rgba(21, 7, 13, 0.72);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(245, 168, 188, 0.16);
+    box-shadow: 0 12px 44px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.gothic-card {
+    background: linear-gradient(160deg, rgba(43, 15, 26, 0.92), rgba(12, 6, 9, 0.96));
+    border: 1px solid rgba(245, 168, 188, 0.16);
+    border-radius: 1.4rem;
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    position: relative;
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.gothic-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(224, 82, 110, 0.55);
+    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.62), 0 0 26px rgba(224, 82, 110, 0.18);
+}
+.gothic-card-hero { border-radius: 2rem; }
+
+/* Double decorative border for hero card */
+.gothic-card-hero::before {
+    content: '';
+    position: absolute;
+    inset: 9px;
+    border: 1px solid rgba(245, 168, 188, 0.12);
+    border-radius: 1.5rem;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.gothic-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    background: linear-gradient(120deg, #fff4f7 0%, #f5a8bc 45%, #e0526e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    letter-spacing: 0.01em;
+}
+.gothic-accent { color: var(--color-rose); font-weight: 700; }
+.gothic-role {
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    letter-spacing: 0.06em;
+    color: #f6dfe7;
+    font-weight: 500;
+}
+.gothic-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-blush);
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+.gothic-heading {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    background: linear-gradient(120deg, #fff4f7, #e0526e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-align: center;
+    letter-spacing: 0.02em;
+}
+.gothic-hand { color: var(--color-blush); }
+.gothic-text { color: #ecd7de; line-height: 1.75; }
+
+/* ============================================================
+   SECTION HEAD + DIVIDER
+   ============================================================ */
+.gothic-section-head {
+    text-align: center;
+    margin-bottom: 2.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.gothic-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-rose);
+    width: 100%;
+    max-width: 340px;
+    margin-top: 0.5rem;
+}
+.gothic-divider i {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(224,82,110,.65), transparent);
+}
+.gothic-divider span { font-size: 1.1rem; animation: var(--animate-heart-beat); }
+
+/* ============================================================
+   CHIPS / BADGES
+   ============================================================ */
+.gothic-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.05rem;
+    border-radius: 9999px;
+    background: rgba(179, 18, 40, 0.2);
+    border: 1px solid rgba(224, 82, 110, 0.4);
+    color: #f6c9d4;
+    font-size: 0.92rem;
+}
+.gothic-chip-icon, .gothic-github-icon { color: var(--color-rose); }
+.gothic-card-ribbon { color: var(--color-rose); }
+.gothic-mini-badge {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-blush);
+    border: 1px solid rgba(245, 168, 188, 0.4);
+    border-radius: 9999px;
+    padding: 0.22rem 0.65rem;
+    background: rgba(245, 168, 188, 0.06);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.gothic-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.82rem 1.7rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #b31228, #e0526e);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 24px rgba(179, 18, 40, 0.45), inset 0 1px 0 rgba(255,255,255,.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+.gothic-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 34px rgba(224, 82, 110, 0.55), 0 0 18px rgba(224,82,110,.3);
+    filter: brightness(1.08);
+}
+
+.gothic-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.74rem 1.45rem;
+    border-radius: 1rem;
+    font-weight: 500;
+    color: var(--color-blush);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(245, 168, 188, 0.32);
+    transition: all 0.25s ease;
+}
+.gothic-btn-ghost:hover {
+    background: rgba(224, 82, 110, 0.14);
+    border-color: var(--color-rose);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.gothic-btn-github {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.9rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #2b0f1a, #8a1122);
+    border: 1px solid rgba(245, 168, 188, 0.4);
+    box-shadow: 0 8px 24px rgba(179, 18, 40, 0.4);
+    transition: all 0.3s ease;
+}
+.gothic-btn-github:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(224, 82, 110, 0.5), 0 0 18px rgba(224,82,110,.25);
+    border-color: var(--color-glow);
+}
+
+.gothic-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.8rem;
+    color: var(--color-blush);
+    border: 1px solid rgba(245, 168, 188, 0.32);
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.25s ease;
+}
+.gothic-icon-btn:hover { background: rgba(224, 82, 110, 0.16); border-color: var(--color-rose); transform: translateY(-2px); }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.gothic-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #f7e6ec;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.03em;
+    transition: color 0.25s ease;
+}
+.gothic-logo .logo-heart { color: var(--color-rose); display: inline-block; animation: var(--animate-heart-beat); }
+.gothic-logo:hover { color: var(--color-rose); }
+
+.gothic-nav a:not(.gothic-btn-primary) {
+    color: var(--color-muted-rose);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.4rem 0.15rem;
+    position: relative;
+    transition: color 0.25s ease;
+}
+/* cute gothic underline */
+.gothic-nav a:not(.gothic-btn-primary)::after {
+    content: '♡';
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    transform: translateX(-50%) scale(0);
+    color: var(--color-rose);
+    font-size: 0.8rem;
+    transition: transform 0.25s ease;
+}
+.gothic-nav a:not(.gothic-btn-primary):hover { color: #fff; }
+.gothic-nav a:not(.gothic-btn-primary):hover::after { transform: translateX(-50%) scale(1); }
+.gothic-nav a.nav-active { color: #fff; }
+.gothic-nav a.nav-active::after { transform: translateX(-50%) scale(1); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero-halo {
+    font-size: 2.2rem;
+    color: var(--color-rose);
+    animation: var(--animate-twinkle);
+    display: inline-block;
+    filter: drop-shadow(0 0 8px rgba(224,82,110,.6));
+}
+.gothic-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 1.3rem;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, rgba(179,18,40,.25), rgba(224,82,110,.18));
+    border: 1px solid rgba(224, 82, 110, 0.45);
+    box-shadow: 0 0 20px rgba(224,82,110,.18);
+    color: #ffdbe4;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+.gothic-role-badge .badge-heart { color: var(--color-rose); animation: var(--animate-heart-beat); }
+
+/* Profile portrait with gothic frame */
+.gothic-portrait { position: relative; width: min(320px, 84vw); margin: 0 auto; }
+.gothic-portrait-frame {
+    aspect-ratio: 1 / 1;
+    border-radius: 2.2rem;
+    overflow: hidden;
+    border: 2px solid rgba(245, 168, 188, 0.55);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(224, 82, 110, 0.28);
+    background: linear-gradient(160deg, #2b0f1a, #15070d);
+    position: relative;
+    transform: rotate(-2.5deg);
+    transition: transform 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease;
+    z-index: 1;
+}
+.gothic-portrait:hover .gothic-portrait-frame { transform: rotate(0deg) scale(1.02) translateY(-4px); border-color: var(--color-glow); box-shadow: 0 26px 70px rgba(0,0,0,.7), 0 0 50px rgba(224,82,110,.4); }
+.gothic-portrait-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 46px rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+}
+.gothic-portrait-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-rose);
+    font-size: 3rem;
+}
+/* outer decorative rotating dashed ring */
+.gothic-portrait::after {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 2.6rem;
+    border: 1px dashed rgba(245, 168, 188, 0.35);
+    pointer-events: none;
+    z-index: 0;
+}
+/* ribbon accent on the frame */
+.gothic-portrait-ribbon {
+    position: absolute;
+    top: -20px;
+    right: -28px;
+    width: 104px;
+    height: 46px;
+    background: repeating-linear-gradient(45deg, #b31228 0 12px, #e0526e 12px 24px);
+    border-radius: 10px;
+    transform: rotate(14deg);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+    z-index: 2;
+    opacity: 0.9;
+}
+.gothic-portrait-ribbon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -14px;
+    border-left: 14px solid #e0526e;
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+}
+
+/* floating hearts / sparkles around hero */
+.hero-sparkles { position: relative; }
+.hero-sparkle-item {
+    position: absolute;
+    color: var(--color-rose);
+    filter: drop-shadow(0 0 6px rgba(224,82,110,.6));
+    animation: var(--animate-twinkle);
+    pointer-events: none;
+}
+.hero-heart-float {
+    position: absolute;
+    color: var(--color-blush);
+    filter: drop-shadow(0 0 8px rgba(245,168,188,.55));
+    animation: var(--animate-float);
+    pointer-events: none;
+}
+
+/* ============================================================
+   ABOUT / CONTACT CARDS
+   ============================================================ */
+.gothic-contact-card {
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(160deg, rgba(43,15,26,.85), rgba(12,6,9,.95));
+    border: 1px solid rgba(245,168,188,.16);
+    border-radius: 1.4rem;
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.gothic-contact-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(224,82,110,.55);
+    box-shadow: 0 14px 40px rgba(0,0,0,.55), 0 0 20px rgba(224,82,110,.18);
+}
+.gothic-contact-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #fff;
+    background: linear-gradient(135deg, #b31228, #e0526e);
+    box-shadow: 0 6px 18px rgba(179,18,40,.45);
+}
+.gothic-contact-card .contact-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-rose);
+    margin-top: 0.3rem;
+}
+.gothic-contact-card .contact-value {
+    color: #f6dfe7;
+    font-weight: 600;
+    font-size: 0.98rem;
+    word-break: break-word;
+}
+.gothic-contact-card a.contact-value:hover { color: var(--color-rose); }
+
+/* ============================================================
+   EDUCATION — gothic timeline
+   Desktop: alternating cards around a center line
+   Mobile : stacked cards with a left line
+   ============================================================ */
+.edu-track { position: relative; display: flex; flex-direction: column; gap: 2.5rem; }
+
+/* left line on mobile */
+.edu-track::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    transform: none;
+    background: linear-gradient(180deg, transparent, rgba(224,82,110,.5), rgba(224,82,110,.5), transparent);
+}
+
+.edu-node {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    padding-left: 3.4rem;
+}
+.edu-box { flex: 1; }
+.edu-dot {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.6rem;
+    height: 2.6rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #fff;
+    background: radial-gradient(circle at 30% 30%, #e0526e, #b31228);
+    border: 2px solid rgba(245,168,188,.5);
+    box-shadow: 0 0 22px rgba(224,82,110,.5);
+    z-index: 1;
+}
+
+/* Desktop: center alternating timeline */
+@media (min-width: 1024px) {
+    .edu-track::before { left: 50%; transform: translateX(-50%); }
+    .edu-node { padding-left: 0; gap: 3rem; }
+    .edu-node:nth-child(odd) { flex-direction: row; }
+    .edu-node:nth-child(even) { flex-direction: row-reverse; }
+    .edu-dot {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+    }
+    .edu-node:nth-child(odd) .edu-box { text-align: left; }
+    .edu-node:nth-child(even) .edu-box { text-align: right; align-items: flex-end; }
+}
+
+
+.gothic-edu-card {
+    padding: 1.6rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+    align-items: center;
+    max-width: 460px;
+    width: 100%;
+    overflow: hidden;
+}
+.gothic-edu-card::before {
+    content: '❦';
+    position: absolute;
+    top: -12px;
+    right: -6px;
+    font-size: 3.2rem;
+    color: rgba(224, 82, 110, 0.12);
+    transform: rotate(15deg);
+}
+.gothic-edu-level {
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-rose);
+    font-weight: 700;
+}
+.gothic-edu-school { font-weight: 700; color: #f7e6ec; font-size: 1.1rem; }
+.gothic-edu-location { color: var(--color-muted-rose); font-size: 0.85rem; }
+.gothic-edu-years {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-blush);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    border: 1px solid rgba(245,168,188,.25);
+    border-radius: 9999px;
+    padding: 0.3rem 0.9rem;
+    margin-top: 0.3rem;
+}
+.gothic-edu-degree { color: var(--color-bone); font-size: 0.92rem; font-weight: 600; }
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+.gothic-project-card {
+    padding: 1.7rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.6rem;
+}
+.gothic-project-card::after {
+    content: '⚜';
+    position: absolute;
+    bottom: 10px;
+    right: 14px;
+    font-size: 2.4rem;
+    color: rgba(224,82,110,.1);
+    pointer-events: none;
+}
+.gothic-project-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #f7e6ec;
+    margin-bottom: 0.5rem;
+    transition: color 0.25s ease;
+}
+.gothic-project-card:hover .gothic-project-name { color: var(--color-rose); }
+.gothic-tech {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--color-blush);
+    background: rgba(224, 82, 110, 0.12);
+    border: 1px solid rgba(224, 82, 110, 0.3);
+    border-radius: 9999px;
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 0.8rem;
+    align-self: flex-start;
+}
+.gothic-project-card .gothic-btn-ghost {
+    margin-top: auto;
+    justify-content: center;
+}
+
+/* ============================================================
+   GITHUB
+   ============================================================ */
+.gothic-github-card {
+    text-align: center;
+    padding: 2.6rem;
+    border-radius: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.gothic-github-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px 200px at 50% 0%, rgba(224,82,110,.14), transparent 70%);
+    pointer-events: none;
+}
+.gothic-icon-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-muted-rose);
+    font-size: 0.95rem;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+.gothic-icon-link:hover { color: var(--color-rose); transform: translateY(-2px); }
+.gothic-chip-icon { color: var(--color-rose); }
+
+/* ============================================================
+   REVEAL ON SCROLL
+   ============================================================ */
+.reveal {
+    opacity: 0;
+    transform: translateY(34px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+.reveal-left { transform: translateX(-34px); }
+.reveal-right { transform: translateX(34px); }
+.reveal-left.is-visible, .reveal-right.is-visible { transform: none; }
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    50% { opacity: 0.45; transform: scale(0.8) rotate(20deg); }
+}
+@keyframes heart-beat {
+    0%, 100% { transform: scale(1); }
+    18% { transform: scale(1.18); }
+    36% { transform: scale(1); }
+}
+@keyframes sparkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.6); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================================
+   ACCESSIBILITY / REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+    .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; }
+    .gothic-portrait-frame { transform: none; }
+}
