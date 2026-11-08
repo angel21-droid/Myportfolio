@@ -72,15 +72,16 @@
             "dont-discover": []
         }
     },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
-        }
-    },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "process-timeout": 900,
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    }
+  },
     "minimum-stability": "stable",
     "prefer-stable": true
 }
