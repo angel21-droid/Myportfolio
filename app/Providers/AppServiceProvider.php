@@ -15,20 +15,31 @@ class AppServiceProvider extends ServiceProvider
         // every writable Laravel path has to be redirected when the app runs
         // there. These are runtime-only, non-secret defaults; APP_KEY and mail
         // credentials still come from Vercel's environment variables.
-        if (getenv('VERCEL') || env('VERCEL')) {
-            $compiled = '/tmp/views';
-            if (! is_dir($compiled)) {
-                @mkdir($compiled, 0755, true);
+        $isVercel = getenv('VERCEL') || getenv('NOW_REGION') || isset($_SERVER['VERCEL']) || env('VERCEL');
+
+        if ($isVercel) {
+            $compiled = env('VIEW_COMPILED_PATH', '/tmp/storage/framework/views');
+            $cache = '/tmp/storage/framework/cache/data';
+
+            foreach ([$compiled, $cache, '/tmp/storage/framework/sessions'] as $dir) {
+                if (! is_dir($dir)) {
+                    @mkdir($dir, 0755, true);
+                }
             }
 
             config([
                 'app.debug' => false,
+                'app.env' => env('APP_ENV', 'production'),
                 'view.compiled' => $compiled,
                 'session.driver' => 'cookie',
                 'cache.default' => 'array',
-                'cache.stores.file.path' => '/tmp/cache',
+                'cache.stores.file.path' => $cache,
+                'cache.stores.database.connection' => null,
                 'queue.default' => 'sync',
+                'queue.connections.database.connection' => null,
                 'logging.default' => 'stderr',
+                'logging.channels.single.path' => '/tmp/storage/logs/laravel.log',
+                'logging.channels.daily.path' => '/tmp/storage/logs/laravel.log',
                 'logging.channels.stack.channels' => ['stderr'],
             ]);
         }
