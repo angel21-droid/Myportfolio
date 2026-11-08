@@ -58,29 +58,4 @@ if ($isVercel) {
     }
 }
 
-// TEMPORARY RUNTIME DEBUG (remove after diagnosing Vercel 500): surface the
-// real/underlying exception in the response/logs instead of a blank 500.
-try {
-    require __DIR__.'/../public/index.php';
-} catch (\Throwable $e) {
-    $root = $e->getPrevious() ?: $e;
-    $message = htmlspecialchars($root->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    $file = htmlspecialchars($root->getFile(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    $line = (int) $root->getLine();
-    $trace = htmlspecialchars($root->getTraceAsString(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    $wrapper = $root !== $e ? htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : null;
-
-    error_log('[Vercel Laravel bootstrap error] '.$root->getMessage().' @ '.$root->getFile().':'.$root->getLine());
-    if (! headers_sent()) {
-        http_response_code(500);
-        header('Content-Type: text/plain; charset=UTF-8');
-    }
-
-    echo "Laravel bootstrap exception (temporary debug)\n\n";
-    echo $message."\n\n";
-    echo $file.':'.$line."\n\n";
-    if ($wrapper !== null) {
-        echo "Wrapper: ".$wrapper."\n\n";
-    }
-    echo $trace;
-}
+require __DIR__.'/../public/index.php';
