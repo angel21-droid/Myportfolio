@@ -1,0 +1,18 @@
+# Files Vercel does not need to receive in the upload.
+# The vercel-php runtime runs `composer install` itself, and Vercel runs
+# `npm ci` + `npm run build` from vercel.json.
+
+/node_modules
+/vendor
+/.git
+/.github
+/.env
+/.env.*
+/.phpunit.cache
+/.phpunit.result.cache
+/PROMPT_LOG.md
+/.codex
+/.cursor
+/.idea
+/.vscode
+/.zed

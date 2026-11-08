@@ -1,131 +1,222 @@
-# Angel Bio — BSIT 4 Portfolio
+# Angel Bio — Personal Portfolio Website
 
-A cute gothic anime–inspired portfolio website built with **Laravel 13** and **Blade** templates. Created as the **BSIT 4 Midterm** project.
+A personal portfolio website developed by an Information Technology student to showcase technical skills, academic background, projects, certificates, and professional experience. It is built with **Laravel 13**, **Blade**, **Tailwind CSS v4**, and lightweight vanilla JavaScript, and designed as a premium midnight-navy × lavender editorial site with a dark/light theme switcher.
 
-## Description
+## Project Overview
 
-This is a personal portfolio website that presents my information, educational background, projects, and GitHub repositories in a polished, dark-romantic gothic style. The site is a **static website** — all content is rendered from a single static configuration file using Laravel Blade, with **no database, migrations, Eloquent models, or authentication**.
+This is a **single-page, static-content** Laravel portfolio for **Angel V. Bio** (IT Student | Aspiring Web Developer, Salnec, Bucay, Abra). All portfolio content is rendered from one PHP configuration file through Blade — there is no database, no migrations, no Eloquent models, no authentication, and no admin panel.
 
-## Purpose
+The site is prepared for local development and for **Vercel deployment** via the `vercel-php` community runtime. On Vercel, runtime state is kept off the read-only filesystem (cookie sessions, array cache, sync queue, stderr logging, and compiled Blade views in `/tmp/views`).
 
-The project demonstrates the use of the Laravel framework and the Blade templating engine to build a clean, professional, and visually distinctive personal portfolio — showcasing my journey as a BSIT student and my coding projects.
+## Features
+
+- Responsive portfolio design across desktop, laptop, tablet, and mobile.
+- **Light Mode and Dark Mode** — dark by default, sun/moon toggle, `localStorage` persistence (`portfolio-theme`), first-visit system preference fallback, and pre-paint theme boot to avoid flash.
+- Interactive navigation — sticky blurred bar, smooth scrolling, active-section highlighting, always-visible desktop links down to 900px, and a hamburger/mobile menu on smaller screens.
+- **Hero and About** sections with real profile information, a balanced hero layout, a downloadable resume, and GitHub/Facebook links.
+- **Skills & Technologies** grouped into Design, Development, Tools & Technologies, and Other Skills (no percentage bars).
+- **Featured Projects** with category filters, project detail modals, screenshot galleries, and real GitHub/Live Demo links (P.E EMIS, Bangued-Ka-Fuel, AbraQuest, Task Manager).
+- **Certificate Gallery** (newest first) with category filters, real preview images, and a large preview/PDF modal.
+- **Education Timeline** for tertiary and secondary education.
+- **LRA OJT Experience** — Land Registration Authority (LRA), Intern, Currently Ongoing — until OJT completion; responsibilities: File Management, Encoding.
+- **Contact Form** — validated `POST /contact` with name/email/subject/message, a honeypot field, rate limiting, and `Mail::raw` delivery.
+- **Resume Download** — `Download My Resume` links to `public/resume/AngelBio_resume.pdf`.
+
+No features are claimed beyond what is implemented and covered by the test suite.
 
 ## Technologies Used
 
-- **Laravel 13** (PHP ^8.3) — web framework and routing
-- **Blade templates** — all views and sections
-- **Tailwind CSS v4** — styling, via the `@tailwindcss/vite` plugin
-- **Vite** — asset bundling (`laravel-vite-plugin`)
-- **PHP 8.3+** — backend runtime
-- **JavaScript** — small amount of vanilla JS for navigation, smooth scrolling, scroll-reveal, and active-link highlighting
+Technologies actually used in this implementation:
 
-## Laravel & Blade Usage
+- **Laravel 13.29** (PHP `^8.3`; developed with PHP 8.5 / Herd Lite) — routing, validation, mail, Blade rendering.
+- **Blade** — layout component, reusable partials, and static data rendering.
+- **Tailwind CSS v4** via `@tailwindcss/vite` — design tokens and styling.
+- **Vite 8** + `laravel-vite-plugin` — asset bundling and font manifest generation.
+- **Vanilla JavaScript** (`resources/js/app.js`) — theme switching, navigation/scroll state, reveals, project/certificate modals and galleries, filters, toasts, and contact-form submit state.
+- **Fonts**: Instrument Sans, Instrument Serif, JetBrains Mono (loaded through the Vite Bunny font integration; `@fonts` in the layout).
+- **Community runtime for Vercel**: `vercel-php@0.9.0` (PHP 8.5), pinned in `vercel.json`.
 
-- A single web route (`routes/web.php`) maps `/` to the `portfolio` view.
-- `resources/views/portfolio.blade.php` loads static data and renders a base layout.
-- `resources/views/components/app-layout.blade.php` provides the HTML skeleton.
-- Section content lives in reusable partials under `resources/views/partials/`.
-- All site content is centralized in `resources/views/partials/config.php` (a plain PHP array returned to Blade) — no database is involved.
+Not used: database/SQLite in production, migrations, Eloquent models, authentication/admin packages, or other frontend frameworks.
 
-## Architecture: Static Website (No Database)
+## Project Structure
 
-The portfolio intentionally avoids dynamic data storage:
+```text
+api/index.php                        # Vercel serverless entry -> public/index.php
+vercel.json                          # Vercel runtime, routes, install/build, output dir
+.vercelignore                        # excludes vendor/node_modules/env/logs from upload
+routes/web.php                       # GET / (home) and POST /contact (validated mail)
+app/Providers/AppServiceProvider.php # Vercel: /tmp views + cookie/array/sync/stderr
+bootstrap/app.php                    # trusts proxy headers for HTTPS on Vercel
+resources/views/
+├── portfolio.blade.php              # loads config data and assembles sections
+├── components/app-layout.blade.php  # HTML shell, theme boot, @vite/@fonts, toasts
+└── partials/
+    ├── config.php                   # ALL real portfolio content
+    ├── nav.blade.php                # sticky nav + theme toggle + mobile menu
+    ├── hero.blade.php               # hero with resume download and socials
+    ├── about.blade.php              # about/story/background/interests/goals
+    ├── skills.blade.php             # design/development/tools/other skills
+    ├── projects.blade.php           # project filters and feature cards
+    ├── project-modal.blade.php      # project detail modal + gallery
+    ├── certificates.blade.php       # newest-first certificates and filters
+    ├── certificate-modal.blade.php  # certificate preview/PDF modal
+    ├── education.blade.php          # education timeline
+    ├── experience.blade.php         # LRA OJT experience only
+    ├── contact.blade.php            # contact links + validated form
+    ├── footer.blade.php             # footer, nav, socials, back-to-top
+    └── social-icon.blade.php        # GitHub/Facebook icon partial
+resources/css/app.css                # Tailwind v4 tokens + midnight/lavender design
+resources/js/app.js                  # theme/nav/reveals/modals/filters/form behavior
+vite.config.js                       # Tailwind + Bunny fonts
+public/image/Prof_photo.jpg          # portrait
+public/resume/AngelBio_resume.pdf    # downloadable resume
+public/certificate/                  # original certificate PDFs
+public/certificate/previews/         # generated JPG previews
+public/{emis,fuel,abraquest,gtrack}_project/ # project screenshots
+tests/Feature/                       # portfolio, contact, Vercel deployment tests
+```
 
-- **No database** — content comes from a static config file (`config.php`)
-- **No migrations**
-- **No Eloquent models** used by the application
-- **No authentication / admin panel**
-- **No unnecessary packages** beyond the Laravel/Vite defaults
+## Installation and Setup
 
-This keeps the project simple, fast, and readable while still exercising Laravel's routing and view layer.
+Prerequisites: **PHP 8.3+** (PHP 8.5 recommended; the project is tested with Herd Lite PHP 8.5), **Composer**, **Node.js**, and **npm**.
 
-## Main Portfolio Sections
+### 1. Clone the repository
 
-Each section is rendered from the static data and laid out in a single-page design with smooth scrolling:
+```bash
+git clone https://github.com/angel21-droid/Myportfolio.git
+cd Myportfolio
+```
 
-- **Hero / Home** — prominently displays the name, course (BSIT 4), short bio, and a profile picture framed in a decorative gothic frame, with hearts, stars/sparkles, ribbons, glow, and subtle animations
-- **About** — contact information cards (email, phone, location, course)
-- **Education** — a gothic timeline listing Elementary, Junior High School, Senior High School, and College (school, location, years, and degree when available)
-- **Projects** — project cards with name, description, technology, and a GitHub repository button
-- **GitHub** — a clear, clickable link to the GitHub profile and featured repository
-- **Footer** — name, course, copyright, and a back-to-top link
-
-## Design
-
-The site uses a **cute gothic anime–inspired** aesthetic with a dark romantic mood:
-
-- Near-black background with deep **crimson red** and **soft pink** accents, plus white/light-gray/muted-red support colors
-- Gothic decorative elements: elegant ribbons, cute hearts, small stars/sparkles, decorative borders, and soft glow effects
-- Attractive cards with subtle hover animations and gentle section fade/slide-in reveals
-- Responsive on desktop, tablet, and mobile, with a working mobile navigation menu
-- Respects `prefers-reduced-motion` for accessibility
-- The design is an original, general gothic aesthetic — no copyrighted characters or artwork are used
-
-## How to Run Locally
-
-Prerequisites: **PHP 8.3+** and **Composer** (both ship with XAMPP), **Node.js** and **npm**.
-
-### 1. Install PHP dependencies
+### 2. Install PHP dependencies
 
 ```bash
 composer install
 ```
 
-### 2. Set up the environment
+If you have multiple PHP versions, run Composer with the intended PHP binary (see AGENTS.md for the Herd Lite example on Windows).
 
-```bash
-copy .env.example .env   # Windows
-php artisan key:generate
-```
-
-### 3. Install and build frontend assets
+### 3. Install frontend dependencies
 
 ```bash
 npm install
-npm run build            # or: npm run dev   (Vite watch for local development)
 ```
 
-### 4. Run the development server
+> `.npmrc` sets `ignore-scripts=true`, so npm lifecycle hooks do not run. Build assets explicitly with `npm run build`.
+
+### 4. Configure `.env`
+
+```bash
+copy .env.example .env   # Windows PowerShell/CMD
+# or: cp .env.example .env
+php artisan key:generate
+```
+
+This portfolio does **not** require a database. Keep (or set) these values:
+
+```env
+SESSION_DRIVER=file
+CACHE_STORE=file
+QUEUE_CONNECTION=sync
+MAIL_MAILER=log
+```
+
+### 5. Database and migrations
+
+**Not required.** The portfolio is static and stores no application data in a database. Tests use in-memory SQLite as configured in `phpunit.xml`; you do not need to create a database file or run migrations.
+
+### 6. Build frontend assets
+
+```bash
+npm run build            # production build -> public/build
+# or: npm run dev        # Vite dev server for local development
+```
+
+### 7. Start the local development server
 
 ```bash
 php artisan serve
 ```
 
-Then open `http://localhost:8000` in your browser.
-
-> Tip: `composer run setup` performs the full bootstrap (dependencies, `.env`, app key, npm build) if you prefer a one-command setup. Do not run `composer run setup` twice unnecessarily — it copies `.env` only if it does not already exist.
+Open `http://127.0.0.1:8000`. Local contact-form submissions are written to `storage/logs/laravel.log` when `MAIL_MAILER=log`.
 
 ### Tests
 
 ```bash
-composer run test        # runs the Laravel test suite
+php artisan test
 ```
 
-## Project Structure (relevant parts)
+## Environment Variables
 
-```
-resources/views/
-├── portfolio.blade.php              # root view (loads data, renders layout)
-├── components/
-│   └── app-layout.blade.php         # HTML skeleton (head, nav, main, footer)
-└── partials/
-    ├── config.php                   # ALL static site content lives here
-    ├── nav.blade.php                # navigation bar (+ mobile menu)
-    ├── hero.blade.php               # hero / home section
-    ├── about.blade.php              # contact info cards
-    ├── education.blade.php          # gothic education timeline
-    ├── projects.blade.php           # project cards
-    ├── github.blade.php             # GitHub links section
-    └── footer.blade.php             # footer
+Documented names only — **do not commit real values, passwords, or API keys**. `.env` is gitignored.
 
-resources/
-├── css/app.css                      # Tailwind v4 theme + gothic styles
-└── js/app.js                        # nav toggle, smooth scroll, reveals
+| Name | Purpose |
+| --- | --- |
+| `APP_NAME` | Application name. |
+| `APP_ENV` | Environment (`local`, `production`). |
+| `APP_KEY` | Laravel encryption key (generate with `php artisan key:generate --show`). **Required in production/Vercel.** |
+| `APP_DEBUG` | Debug mode (`false` in production). |
+| `APP_URL` | Base URL (local or deployed domain). |
+| `SESSION_DRIVER` | `file` locally; Vercel runtime forces `cookie` when `VERCEL=1`. |
+| `CACHE_STORE` | `file` locally; Vercel runtime forces `array` when `VERCEL=1`. |
+| `QUEUE_CONNECTION` | `sync` locally; Vercel runtime forces `sync` when `VERCEL=1`. |
+| `LOG_CHANNEL` | Logging channel; Vercel uses `stderr`. |
+| `VIEW_COMPILED_PATH` | Optional; Vercel runtime uses `/tmp/views`. |
+| `MAIL_MAILER` | Mail transport (`log` locally; set a real mailer to receive contact messages). |
+| `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` | SMTP credentials for real contact-form delivery (keep secret). |
+| `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME` | Sender identity. |
+| `VITE_APP_NAME` | Frontend app name reference. |
 
-routes/web.php                       # single route: / -> portfolio view
-public/image/profile.jpg             # profile picture (referenced via asset())
-```
+No database credentials are required for the current static portfolio.
+
+## Vercel Deployment
+
+The repository is configured for import into Vercel from GitHub.
+
+### Deployment configuration
+
+- `vercel.json` pins `vercel-php@0.9.0` (PHP 8.5), sets `framework: null`, `outputDirectory: public`, runs `npm ci` + `npm run build`, and routes `/`, `/index.php`, `/.htaccess`, and all non-file requests to `api/index.php`.
+- `api/index.php` forwards requests to Laravel's `public/index.php`.
+- `bootstrap/app.php` trusts proxy headers so generated URLs use HTTPS behind Vercel.
+- `app/Providers/AppServiceProvider.php` detects `VERCEL=1` and applies read-only-filesystem-safe runtime settings.
+- `GET /up` is the health check route.
+
+### Step-by-step import
+
+1. Push the project to `https://github.com/angel21-droid/Myportfolio.git` (or your target branch).
+2. Open [vercel.com/new](https://vercel.com/new) and import the GitHub repository.
+3. Framework preset: **Other**. Root directory: `./`. Keep the default commands/output — `vercel.json` provides them.
+4. Add environment variables (Project → Settings → Environment Variables):
+   - `APP_KEY` — value from `php artisan key:generate --show`
+   - `APP_ENV` — `production`
+   - `APP_DEBUG` — `false`
+   - `APP_URL` — your Vercel deployment URL or custom domain
+5. Deploy. The build runs `npm ci`, `npm run build`, and Composer install for the PHP function.
+6. Verify `https://<your-project>.vercel.app/` loads and `https://<your-project>.vercel.app/up` returns HTTP 200.
+
+### Contact form on Vercel
+
+`MAIL_MAILER=log` only writes to Vercel runtime logs; it does not deliver email. To receive contact messages, configure a real mail service (for example SMTP, Resend, or another supported mailer) in Vercel environment variables and redeploy. Keep credentials in Vercel, not in Git.
+
+### External services
+
+No external database or queue worker is required. The only optional external service is a mail provider for real contact-form delivery.
+
+### Limitations
+
+- Vercel's filesystem is read-only except `/tmp`; sessions/cache/compiled views are handled accordingly.
+- `vercel-php` is a community runtime (pinned version). If Vercel platform behavior changes, keep PHP 8.5+ for Laravel 13 compatibility.
+
+## Project Screenshots
+
+Screenshots are not committed as separate README preview images in this repository. The portfolio itself renders real project screenshots and certificate previews from the `public/` assets listed above.
+
+## Author
+
+**Angel V. Bio**
+
+- GitHub: [https://github.com/angel21-droid](https://github.com/angel21-droid)
+- Email: [bioangel29@gmail.com](mailto:bioangel29@gmail.com)
 
 ## License
 
-This is a personal educational project. Laravel itself is open-sourced under the [MIT license](https://opensource.org/licenses/MIT).
+No `LICENSE` file is currently present in this repository. No license is claimed or invented here. Laravel (the framework dependency) is open-sourced under the [MIT license](https://opensource.org/licenses/MIT).
