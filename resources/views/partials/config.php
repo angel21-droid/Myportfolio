@@ -163,6 +163,20 @@ return [
             'live'         => null,
             'role'         => null,
         ],
+        [
+            'name'         => 'My Portfolio Website',
+            'category'     => 'Web Development',
+            'description'  => 'A personal website to showcase my projects, skills, and experiences.',
+            'technologies' => ['Blade', 'CSS', 'PHP', 'JavaScript'],
+            'images'       => [
+                'portfolio_project/portfolio_project.png',
+                'portfolio_project/portfolio_project2.png',
+            ],
+            'orientation'  => 'wide',
+            'github'       => null,
+            'live'         => 'https://myportfoliobioangel.vercel.app/',
+            'role'         => null,
+        ],
     ],
 
     'certificates' => [
