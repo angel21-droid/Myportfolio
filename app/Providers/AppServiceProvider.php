@@ -18,14 +18,17 @@ class AppServiceProvider extends ServiceProvider
         $isVercel = getenv('VERCEL') || getenv('NOW_REGION') || isset($_SERVER['VERCEL']) || env('VERCEL');
 
         if ($isVercel) {
-            $compiled = env('VIEW_COMPILED_PATH', '/tmp/storage/framework/views');
-            $cache = '/tmp/storage/framework/cache/data';
+            $storage = '/tmp/storage';
+            $compiled = env('VIEW_COMPILED_PATH', $storage.'/framework/views');
+            $cache = $storage.'/framework/cache/data';
 
-            foreach ([$compiled, $cache, '/tmp/storage/framework/sessions'] as $dir) {
+            foreach ([$storage, $storage.'/app', $storage.'/app/public', $storage.'/framework', $compiled, $cache, $storage.'/framework/sessions', $storage.'/logs', '/tmp/bootstrap/cache'] as $dir) {
                 if (! is_dir($dir)) {
                     @mkdir($dir, 0755, true);
                 }
             }
+
+            $this->app->useStoragePath($storage);
 
             config([
                 'app.debug' => false,
@@ -38,8 +41,8 @@ class AppServiceProvider extends ServiceProvider
                 'queue.default' => 'sync',
                 'queue.connections.database.connection' => null,
                 'logging.default' => 'stderr',
-                'logging.channels.single.path' => '/tmp/storage/logs/laravel.log',
-                'logging.channels.daily.path' => '/tmp/storage/logs/laravel.log',
+                'logging.channels.single.path' => $storage.'/logs/laravel.log',
+                'logging.channels.daily.path' => $storage.'/logs/laravel.log',
                 'logging.channels.stack.channels' => ['stderr'],
             ]);
         }
