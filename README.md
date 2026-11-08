@@ -15,7 +15,7 @@ The site is prepared for local development and for **Vercel deployment** via the
 - Interactive navigation — sticky blurred bar, smooth scrolling, active-section highlighting, always-visible desktop links down to 900px, and a hamburger/mobile menu on smaller screens.
 - **Hero and About** sections with real profile information, a balanced hero layout, a downloadable resume, and GitHub/Facebook links.
 - **Skills & Technologies** grouped into Design, Development, Tools & Technologies, and Other Skills (no percentage bars).
-- **Featured Projects** with category filters, project detail modals, screenshot galleries, and real GitHub/Live Demo links (P.E EMIS, Bangued-Ka-Fuel, AbraQuest, Task Manager).
+- **Featured Projects** with category filters, project detail modals, screenshot galleries, and real GitHub/Live Demo links (P.E EMIS, Bangued-Ka-Fuel, AbraQuest, Task Manager, My Portfolio).
 - **Certificate Gallery** (newest first) with category filters, real preview images, and a large preview/PDF modal.
 - **Education Timeline** for tertiary and secondary education.
 - **LRA OJT Experience** — Land Registration Authority (LRA), Intern, Currently Ongoing — until OJT completion; responsibilities: File Management, Encoding.
